@@ -4,16 +4,12 @@ import (
 	"context"
 	"errors"
 
-	userGrpc "github.com/hanherb/go-playground/grpc-gen"
+	grpcService "github.com/hanherb/go-playground/grpc-gen"
 	"github.com/hanherb/go-playground/src/config"
 	"github.com/hanherb/go-playground/src/repositories"
 )
 
-type UserUnimplemented struct {
-	userGrpc.UnimplementedUserServiceServer
-}
-
-func (u *UserUnimplemented) GetOneUser(ctx context.Context, req *userGrpc.UserGetOneRequest) (*userGrpc.UserGetOneResponse, error) {
+func (g *GrpcController) GetOneUser(ctx context.Context, req *grpcService.UserGetOneRequest) (*grpcService.UserGetOneResponse, error) {
 	if &req.Id == nil {
 		return nil, errors.New("id cannot be empty")
 	}
@@ -24,14 +20,14 @@ func (u *UserUnimplemented) GetOneUser(ctx context.Context, req *userGrpc.UserGe
 		return nil, err
 	}
 
-	response := &userGrpc.UserGetOneResponse{
+	response := &grpcService.UserGetOneResponse{
 		Data: user.Data().ToGrpc(),
 	}
 
 	return response, nil
 }
 
-func (u *UserUnimplemented) GetListUser(ctx context.Context, req *userGrpc.UserGetListRequest) (*userGrpc.UserGetListResponse, error) {
+func (g *GrpcController) GetListUser(ctx context.Context, req *grpcService.UserGetListRequest) (*grpcService.UserGetListResponse, error) {
 	users := repositories.NewUserRepositories(config.DB)
 
 	data, err := users.Get(ctx, req)
@@ -39,7 +35,7 @@ func (u *UserUnimplemented) GetListUser(ctx context.Context, req *userGrpc.UserG
 		return nil, err
 	}
 
-	response := &userGrpc.UserGetListResponse{}
+	response := &grpcService.UserGetListResponse{}
 	for _, user := range users.Data() {
 		response.Data = append(response.Data, user.ToGrpc())
 	}

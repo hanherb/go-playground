@@ -1,0 +1,11 @@
+syntax="proto3";
+
+package playground.v1;
+option go_package = "/;grpcService";
+
+import "protobuf/user.proto";
+
+service MainService {
+    rpc GetOneUser (UserGetOneRequest) returns (UserGetOneResponse);
+    rpc GetListUser (UserGetListRequest) returns (UserGetListResponse);
+}

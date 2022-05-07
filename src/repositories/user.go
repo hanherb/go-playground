@@ -69,7 +69,7 @@ func (r *UserRepositoriesImp) Get(ctx context.Context, props *userGrpc.UserGetLi
 
 	query := r.query
 
-	if &props.City != nil {
+	if props.City != nil {
 		query = query.Where("city = ?", props.City)
 	}
 

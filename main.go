@@ -6,9 +6,9 @@ import (
 	"log"
 	"net"
 
-	u "github.com/hanherb/go-playground/grpc-gen"
+	grpcService "github.com/hanherb/go-playground/grpc-gen"
 	"github.com/hanherb/go-playground/src/config"
-	"github.com/hanherb/go-playground/src/controllers"
+	controllers "github.com/hanherb/go-playground/src/controllers"
 
 	"google.golang.org/grpc"
 )
@@ -38,7 +38,7 @@ func startGRPCServer(errChan chan error) {
 	// Define GRPC Server
 	s := grpc.NewServer()
 
-	u.RegisterUserServiceServer(s, &controllers.UserUnimplemented{})
+	grpcService.RegisterMainServiceServer(s, &controllers.GrpcController{})
 
 	// Running GRPC Server
 	if err := s.Serve(lis); err != nil {
