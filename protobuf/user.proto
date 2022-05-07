@@ -1,0 +1,66 @@
+syntax="proto3";
+
+package playground.v1;
+option go_package = "/;user_grpc";
+
+message User {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string city = 4;
+}
+
+message UserCreateUpdate {
+    string name = 2;
+    string email = 3;
+    string city = 4;
+}
+
+// =========================================================================================================
+
+message UserGetOneRequest {
+    int32 id = 1;
+}
+
+message UserGetOneResponse {
+    User user = 1;
+}
+
+message UserGetListRequest {
+    string city = 4;
+}
+
+message UserGetListResponse {
+    repeated User data = 1;
+    int32 count = 2;
+}
+
+message UserCreateRequest {
+    UserCreateUpdate data = 1;
+}
+
+message UserCreateResponse {
+    User data = 1;
+}
+
+message UserUpdateRequest {
+    int32 id = 1;
+    UserCreateUpdate data = 2;
+}
+
+message UserUpdateResponse {
+    User data = 1;
+}
+
+message UserDeleteRequest {
+    int32 id = 1;
+}
+
+message PollingDeleteResponse {
+    User data = 1;
+}
+
+service UserService {
+    rpc GetOneUser (UserGetOneRequest) returns (UserGetOneResponse);
+    rpc GetListUser (UserGetListRequest) returns (UserGetListResponse);
+}
