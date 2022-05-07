@@ -41,7 +41,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 func (r *UserRepositoryImp) Get(ctx context.Context, props *userGrpc.UserGetOneRequest) error {
 	query := r.query
 
-	if &props.Id != nil {
+	if props.Id != nil {
 		query = query.Where("id = ?", props.Id)
 	}
 

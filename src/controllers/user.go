@@ -10,7 +10,7 @@ import (
 )
 
 func (g *GrpcController) GetOneUser(ctx context.Context, req *grpcService.UserGetOneRequest) (*grpcService.UserGetOneResponse, error) {
-	if &req.Id == nil {
+	if req.Id == nil {
 		return nil, errors.New("id cannot be empty")
 	}
 
