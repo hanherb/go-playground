@@ -6,17 +6,22 @@ import (
 	"log"
 	"net"
 
-	u "github.com/hanherb/go-playground/grpc-gen/user_grpc.pb.go"
+	u "github.com/hanherb/go-playground/grpc-gen"
+	"github.com/hanherb/go-playground/src/config"
+	"github.com/hanherb/go-playground/src/controllers"
 
 	"google.golang.org/grpc"
 )
 
-type server struct {
-	u.UnimplementedUserServiceServer
-}
-
 func main() {
+	config.MysqlInitialization()
 
+	errChan := make(chan error)
+	defer close(errChan)
+
+	go startGRPCServer(errChan)
+
+	<-errChan
 }
 
 func startGRPCServer(errChan chan error) {
@@ -33,7 +38,7 @@ func startGRPCServer(errChan chan error) {
 	// Define GRPC Server
 	s := grpc.NewServer()
 
-	u.RegisterUserServiceServer(s, &server{})
+	u.RegisterUserServiceServer(s, &controllers.UserUnimplemented{})
 
 	// Running GRPC Server
 	if err := s.Serve(lis); err != nil {

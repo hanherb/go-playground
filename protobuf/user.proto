@@ -23,7 +23,7 @@ message UserGetOneRequest {
 }
 
 message UserGetOneResponse {
-    User user = 1;
+    User data = 1;
 }
 
 message UserGetListRequest {
